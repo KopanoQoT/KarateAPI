@@ -14,11 +14,16 @@ import org.apache.commons.io.FileUtils;
 
 class ExamplesTest {
 
+
     @Test
     void testParallel() {
+
+        String threadsProperty = System.getProperty("karate.threads", "1");
+        int threads = Integer.parseInt(threadsProperty);
+
         Results results = Runner.path("classpath:TheDogAPI/Breeds/getBreedById.feature", "classpath:TheDogAPI/Breeds/getBreeds.feature", "classpath:TheDogAPI/Votes/postVote.feature", "classpath:TheDogAPI/Votes/getAllVotes.feature", "classpath:TheDogAPI/Votes/getVoteById.feature")
                 .outputCucumberJson(true)
-                .parallel(5);
+                .parallel(threads);
         generateReport(results.getReportDir());
         assertEquals(0, results.getFailCount(), results.getErrorMessages());
     }
